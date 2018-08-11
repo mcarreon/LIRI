@@ -53,7 +53,7 @@ function spotifySong() {
             var name = response.tracks.items[0].name;
             var preview = response.tracks.items[0].preview_url;
             var album = response.tracks.items[0].album.name;
-
+            
             var query = [artist, name, preview, album];
             query.forEach(function (e) {
                 if (e === null) {
@@ -94,9 +94,11 @@ function movieThis() {
             var plot = 'Plot: ' + jsonBody.Plot;
             var actors = 'Actors: ' + jsonBody.Actors;
 
+            
             var query = [title, year, rating, rotten, language, plot, actors];
             query.forEach(function (e) {
-                console.log(e);
+                if (e === undefined) {  console.log('N/A');  }
+                else {  console.log(e);  }
             });
         } else {
             console.log(`OMDB Error`);
@@ -110,13 +112,16 @@ function random() {
         var randCommand = res.split(",");
         var command = randCommand[0];
         search = randCommand[1];
+
         switchWrap(command);
     }); 
     
 }
 
 function switchWrap(command) {
-    log();
+    if (command != undefined || search != undefined) {
+        log();
+    }
     switch (command) {
         case 'my-tweets':
             myTweets();
@@ -130,14 +135,19 @@ function switchWrap(command) {
         case 'do-what-it-says':
             random();
             break;
+        default: 
+            console.log('Please provide a valid command');
+            break;
     }
 }
 
 function log() {
     var commandLog = `Command: ${command}, Search: ${search}\n`;
+    if (search === undefined) {commandLog = `Command: ${command}, Search: N/A\n`}
     fs.appendFile('log.txt', commandLog, function (err) {
         if (err) throw err;
         console.log(`"${commandLog}:" has been appended to log.txt`);
+        console.log('\n------------\n');
     });
 }
 
