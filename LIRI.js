@@ -116,6 +116,7 @@ function random() {
 }
 
 function switchWrap(command) {
+    log();
     switch (command) {
         case 'my-tweets':
             myTweets();
@@ -130,6 +131,14 @@ function switchWrap(command) {
             random();
             break;
     }
+}
+
+function log() {
+    var commandLog = `Command: ${command}, Search: ${search}\n`;
+    fs.appendFile('log.txt', commandLog, function (err) {
+        if (err) throw err;
+        console.log(`"${commandLog}:" has been appended to log.txt`);
+    });
 }
 
 switchWrap(command);
